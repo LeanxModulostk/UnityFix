@@ -23,7 +23,7 @@ cpu freq to the tasks.
 3. Reboot
 4. Enjoy!
 
-## Soport
+## Support
 - [GitHub](https://github.com/LeanxModulostk/UnityFix) 
 - [Telegram Channel](https://t.me/modulostk)
 

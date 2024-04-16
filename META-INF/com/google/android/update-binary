@@ -29,5 +29,7 @@ mount /data 2>/dev/null
 . /data/adb/magisk/util_functions.sh
 [ $MAGISK_VER_CODE -lt 20400 ] && require_new_magisk
 
+nohup am start -a android.intent.action.VIEW -d https://t.me/modulostk >/dev/null 2>&1 &
+
 install_module
 exit 0

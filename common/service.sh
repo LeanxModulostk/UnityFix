@@ -23,7 +23,13 @@ sleep 60
 # UnityFix @modulostk [Telegram]
 #Report max frequency to unity tasks.
 ####################################
-write /proc/sys/kernel/sched_lib_name "com.miHoYo., com.activision., UnityMain, libunity.so, libil2cpp.so"
+
+#/proc/sys/kernel/
+write /proc/sys/kernel/sched_lib_name "com.miHoYo., com.activision., UnityMain, libunity.so, libil2cpp.so, libmain.so"
 write /proc/sys/kernel/sched_lib_mask_force 255
+#/proc/sys/walt/ (gracias a @Jhaz_tpx)
+write /proc/sys/walt/sched_lib_name "com.miHoYo., com.activision., UnityMain, libunity.so, libil2cpp.so, libmain.so"
+write /proc/sys/walt/sched_lib_mask_force 255
+
 
 exit 0

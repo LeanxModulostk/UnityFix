@@ -1,7 +1,10 @@
 id=unityfix
 name=UnityFix
-version=6.0
-versionCode=6
+version=9
+versionCode=9
 author=@LeanHijosdesusMadres [telegram]
-description=Mejora el rendimiento de Call of Duty Mobile, Genshin Impact y otros juegos de motor Unity • Improves the performance of Call of Duty Mobile, Genshin Impact and other Unity engine games
+description=Improves the performance of Call of Duty Mobile, Genshin Impact and other Unity engine games
 support=https://t.me/modulostk
+banner=/webroot/leanbanner.jpg
+actionIcon=lean.jpg
+donate=https://www.paypal.me/LeanHijosdesusMadres

@@ -23,20 +23,16 @@ cpu freq to the tasks.
 3. Reboot
 4. Enjoy!
 
-## First version
-
-• [click here](https://t.me/modulostk/2283)
-
-## Support
+## Soport
 - [GitHub](https://github.com/LeanxModulostk/UnityFix) 
 - [Telegram Channel](https://t.me/modulostk)
+
+## Extras
+- Donations: [PayPal](https://www.paypal.me/LeanHijosdesusMadres) - [LiberaPay](https://liberapay.com/LeanHijosdesusMadres) - [Ko-fi](https://ko-fi.com/leantupapi) - [Binance](https://app.binance.com/qr/dplk7b28e9c123ff4e378b472505b0adba63) - [SociaBuzz](https://sociabuzz.com/leanhijosdesusmadres/support) - [More](https://t.me/modulemagiskChiase/4846)
 
 ## Special Thanks
 
 • [Jimmy Shiu](https://android.googlesource.com/device/google/sunfish/+/446024a^!/)
-
 • [alanndz authored and NotZeetaa committed](https://github.com/NotZeetaa/device_xiaomi_sm8250-common-4/commit/f9cb3ad1fb850e0c80d0f7684a4b4b1643aa6b41)
-
 • [Zackptg5](https://github.com/Zackptg5) for the MMT-Ex template
-
 • [Topjohnwu](https://github.com/topjohnwu) for making Magisk

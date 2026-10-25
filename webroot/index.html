@@ -1,1 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Graphics - SurfaceFlinger</title>
+  <style>
+    * {
+      color: rgba(255, 255, 255, .75);
+      font-size: 1rem;
+      -webkit-tap-highlight-color: transparent;
+    }
+    strong {
+      font-size: .9rem;
+    }
+    body {
+      background: #000;
+      padding: 8px;
+    }
+    body::before {
+      background: url("fondo.jpg") center/cover no-repeat;
+      content: "";
+      filter: blur(16px);
+      height: 100%;
+      position: fixed;
+      left: 0;
+      opacity: .99;
+      top: 0;
+      width: 100%;
+      z-index: -1;
+    }
+    h1 {
+      background: rgba(0, 0, 0, .25);
+      border-radius: 35px;
+      font-family: monospace;
+      font-weight: 750;
+      margin-top: 20px;
+      padding: 6px;
+      text-align: center;
+    }
+    pre {
+      background: rgba(0, 0, 0, .1);
+      border: 1px solid rgba(0, 0, 0, .25);
+      border-radius: 15px;
+      flex: 1;
+      margin: 0;
+      padding: 12px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      min-height: 20px;
+    }
+    button {
+      background: rgba(0, 0, 0, .25);
+      border: 0;
+      border-radius: 15px;
+      flex: 1;
+      font-weight: 750;
+      padding: 12px;
+      transition: transform .25s, background .25s;
+    }
+    button:active {
+      background: rgba(0, 0, 0, .5);
+      transform: scale(.95);
+    }
+    .section {
+      background: rgba(0, 0, 0, .25);
+      border-radius: 20px;
+      padding: 16px;
+      margin-top: 16px;
+    }
+    .output-container {
+      margin-bottom: 8px;
+      margin-top: 1px;
+    }
+    .image-container {
+      margin-bottom: 2px;
+      margin-top: 16px;
+      opacity: .99;
+    }
+    .image-container img {
+      border-radius: 20px;
+      max-width: 100%;
+    }
+    .toggle-info {
+      border-radius: 20px;
+      width: 100%;
+      margin-bottom: 12px;
+    }
+    .info-panel {
+      background: rgba(0, 0, 0, .25);
+      border-radius: 20px;
+      margin-top: 12px;
+      max-height: 42px;
+      overflow: hidden;
+      transition: border-radius .5s, max-height .5s, padding .5s;
+    }
+    .info-panel.show {
+      max-height: 500px;
+      transition: border-radius .5s, max-height .5s, padding .5s;
+    }
+    .info-item {
+      margin-bottom: 6px;
+      padding-bottom: 4px;
+      padding-left: 16px;
+      padding-right: 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, .1);
+    }
+    .info-item:last-child {
+      border-bottom: 0;
+    }
+    .info-title {
+      font-weight: 750;
+    }
+    .info-desc {
+      font-size: .95rem;
+      line-height: 1.5;
+      opacity: .8;
+    }
+    .info-option {
+      color: rgba(255, 255, 255, .5);
+      font-size: .85rem;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+  <h1>T . M E / M O D U L O S T K</h1>
+  <div class="image-container">
+    <img src="lean.png">
+  </div>
+  <!-- Contenedor para el log -->
+  <div class="section">
+    <div class="output-container">
+      <pre id="log-output">     @LeanHijosdesusMadres</pre>
+    </div>
+  </div>
+  <div id="infoPanel" class="info-panel hidden">
+    <button id="toggleInfo" class="toggle-info" style="background:rgba(0,255,0,.5)">Show Info</button>
+    <div class="info-item">
+      <div class="info-title">Channel Telegram: @modulostk</div>
+    </div>
+    <div class="info-item" style="margin-bottom:0;">
+      <div class="info-title">Kill All Apps</div>
+      <div class="info-desc">Force closes all apps to free up memory</div>
+    </div>
+    <div class="info-item" style="margin-bottom:0;">
+      <div class="info-title">Credits:</div>
+      <div class="info-desc">@HoyoSlave for model webui</div>
+    </div>
+  </div>
+  <div class="section">
+    <button style="background:rgba(0,100,255,.5);width:100%" data-cmd="su -c 'cat /proc/sys/*/sched_lib_mask_force'">Check UnityFix</button>
+      <div class="section">
+    <button style="background:rgba(255,0,0,.5);width:100%" data-cmd="for a in $(cmd package list packages --user 0 | grep -v android | cut -f2 -d:; cmd package list packages --user 0 google | grep android | cut -f2 -d:); do cmd activity force-stop $a & done">Kill All Apps</button>
+  </div>
 
+<script type="module">
+  import { exec, fullScreen } from "https://cdn.jsdelivr.net/npm/kernelsu@1.0.6/+esm";
+  fullScreen(true);
+  
+  // OBTENER REFERENCIA AL ELEMENTO DE LOG
+  const logOutput = document.getElementById('log-output');
+  
+  // FUNCIÓN PARA ACTUALIZAR EL LOG
+  function updateLog(message, isError = false) {
+  logOutput.textContent = message;
+  logOutput.style.color = isError
+    ? 'rgba(255, 100, 100, 0.9)'
+    : 'rgba(255, 255, 255, 0.75)';
+  console.log(message);
+}
+  
+  // FUNCIÓN PARA EJECUTAR COMANDOS Y MOSTRAR RESULTADO
+  async function executeCommand(command, buttonText) {
+    updateLog(`Ejecutando: ${command}`);
+    
+    try {
+      const result = await exec(command);
+      
+      if (result.stdout && result.stdout.trim()) {
+        updateLog(`  ✓ ${buttonText}: ${result.stdout.trim()}`);
+      } else if (result.stderr && result.stderr.trim()) {
+        updateLog(`⚠ ${buttonText}: ${result.stderr.trim()}`, true);
+      } else {
+        updateLog(`. ✓ ${buttonText}: Comando ejecutado exitosamente`);
+      }
+      
+      return result;
+    } catch (error) {
+      console.error('Error ejecutando comando:', error);
+      updateLog(`✗ ${buttonText}: Error - ${error.message}`, true);
+      return { stdout: '', stderr: error.message };
+    }
+  }
+  
+  window.addEventListener("load", () => {
+    // CONFIGURAR EVENTOS DE BOTONES
+    document.querySelectorAll("button[data-cmd]").forEach(button => {
+      button.addEventListener("click", async () => {
+        const originalCommand = button.dataset.cmd;
+        const buttonText = button.textContent;
+        
+        // LIMPIAR COMANDO SI TIENE FORMATO $(...)
+        let cleanCommand = originalCommand;
+        if (originalCommand.startsWith('$(') && originalCommand.endsWith(')')) {
+          cleanCommand = originalCommand.slice(2, -1);
+        }
+        
+        await executeCommand(cleanCommand, buttonText);
+      });
+    });
+    
+    // CONFIGURAR PANEL DE INFORMACIÓN (toggle)
+    const infoPanel = document.getElementById("infoPanel");
+    const toggleButton = document.getElementById("toggleInfo");
+    
+    if (toggleButton && infoPanel) {
+      toggleButton.addEventListener("click", () => {
+        const isVisible = infoPanel.classList.toggle("show");
+        toggleButton.textContent = isVisible ? "Hide Info" : "Show Info";
+      });
+    }
+  });
+</script>
+</body>
+</html>

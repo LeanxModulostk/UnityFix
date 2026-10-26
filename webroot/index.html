@@ -124,9 +124,9 @@
   </style>
 </head>
 <body>
-  <h1>T . M E / M O D U L O S T K</h1>
+  <h1>[ U N I T Y F I X ]</h1>
   <div class="image-container">
-    <img src="lean.png">
+    <img src="unityfix.png">
   </div>
   <!-- Contenedor para el log -->
   <div class="section">
@@ -135,21 +135,23 @@
     </div>
   </div>
   <div id="infoPanel" class="info-panel hidden">
-    <button id="toggleInfo" class="toggle-info" style="background:rgba(0,255,0,.5)">Show Info</button>
+    <button id="toggleInfo" class="toggle-info" style="background:rgba(120,120,125,.38)">Show Info</button>
     <div class="info-item">
-      <div class="info-title">Channel Telegram: @modulostk</div>
+      <div class="info-title">+ By @LeanHijosdesusMadres</div>
+    </div>
+    <div class="info-item" style="margin-bottom:0;">
+      <div class="info-title">UnityFix</div>
+      <div class="info-desc"> 255 = Use all cores [0-7]</div>
+      <div class="info-desc"> 240 = Use 4 cores [4-7]</div>
+      <div class="info-desc"> 192 = Use 2 cores [6-7]</div>
     </div>
     <div class="info-item" style="margin-bottom:0;">
       <div class="info-title">Kill All Apps</div>
-      <div class="info-desc">Force closes all apps to free up memory</div>
-    </div>
-    <div class="info-item" style="margin-bottom:0;">
-      <div class="info-title">Credits:</div>
-      <div class="info-desc">@HoyoSlave for model webui</div>
+      <div class="info-desc"> Force closes all apps</div>
     </div>
   </div>
   <div class="section">
-    <button style="background:rgba(0,100,255,.5);width:100%" data-cmd="su -c 'cat /proc/sys/*/sched_lib_mask_force'">Check UnityFix</button>
+    <button style="background:rgba(67,102,177,.70);width:100%" data-cmd="su -c 'cat /proc/sys/*/sched_lib_mask_force'">Check UnityFix</button>
       <div class="section">
     <button style="background:rgba(255,0,0,.5);width:100%" data-cmd="for a in $(cmd package list packages --user 0 | grep -v android | cut -f2 -d:; cmd package list packages --user 0 google | grep android | cut -f2 -d:); do cmd activity force-stop $a & done">Kill All Apps</button>
   </div>

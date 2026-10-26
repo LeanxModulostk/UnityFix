@@ -32,7 +32,7 @@ cpu freq to the tasks.
 
 ## Special Thanks
 
-• [Jimmy Shiu](https://android.googlesource.com/device/google/sunfish/+/446024a^!/)
-• [alanndz authored and NotZeetaa committed](https://github.com/NotZeetaa/device_xiaomi_sm8250-common-4/commit/f9cb3ad1fb850e0c80d0f7684a4b4b1643aa6b41)
-• [Zackptg5](https://github.com/Zackptg5) for the MMT-Ex template
-• [Topjohnwu](https://github.com/topjohnwu) for making Magisk
+- [Jimmy Shiu](https://android.googlesource.com/device/google/sunfish/+/446024a^!/)
+- [alanndz authored and NotZeetaa committed](https://github.com/NotZeetaa/device_xiaomi_sm8250-common-4/commit/f9cb3ad1fb850e0c80d0f7684a4b4b1643aa6b41)
+- [Zackptg5](https://github.com/Zackptg5) for the MMT-Ex template
+- [Topjohnwu](https://github.com/topjohnwu) for making Magisk

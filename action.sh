@@ -3,14 +3,19 @@ BASEDIR="$(dirname $(readlink -f "$0"))"
 FILE="/data/adb/modules/unityfix/service.sh"
 A0="/storage/emulated/0"
 
+cp $MODPATH/webroot/modulostk.png /storage/emulated/0/Android/media/.modulostk.png
+cp $MODPATH/webroot/lean.png /storage/emulated/0/Android/media/.lean.png
+
 echo "============================="
-echo "       UnityFix"
+echo "▒█░▒█ █▀▀▄ ░▀░ ▀▀█▀▀ █░░█ ▒█▀▀▀ ░▀░ █░█ "
+echo "▒█░▒█ █░░█ ▀█▀ ░░█░░ █▄▄█ ▒█▀▀▀ ▀█▀ ▄▀▄ "
+echo "░▀▄▄▀ ▀░░▀ ▀▀▀ ░░▀░░ ▄▄▄█ ▒█░░░ ▀▀▀ ▀░▀"
 echo "============================="
 echo ""
-echo "How many cores do you want Unity libs to use?:
-Vol+ = Use all cores [0-7]
-Vol- = Use 4 cores [4-7]
-Touch Screen = Use 2 cores [6-7]"
+echo "[?] How many cores do you want Unity libs to use?
+• Vol+ = Use all cores [0-7]
+• Vol- = Use 4 cores [4-7]
+• Touch Screen = Use 2 cores [6-7]"
 echo ""
 
 # =========================================
@@ -28,9 +33,9 @@ while true; do
                 for f in /proc/sys/*/sched_lib_mask_force; do
                     [ -f "$f" ] && echo 255 > "$f"
                 done
-                echo "UnityFix: Use all cores for Unity libs"
+                echo "[>] UnityFix: Use all cores for Unity libs"
             else
-                echo "UnityFix: No change it was already applied"
+                echo "[>] UnityFix: No change it was already applied"
             fi
             break
         fi
@@ -44,9 +49,9 @@ while true; do
                 for f in /proc/sys/*/sched_lib_mask_force; do
                     [ -f "$f" ] && echo 240 > "$f"
                 done
-                echo "UnityFix: Use 4 cores for Unity libs"
+                echo "[>] UnityFix: Use 4 cores for Unity libs"
             else
-                echo "UnityFix: No change it was already applied"
+                echo "[>] UnityFix: No change it was already applied"
             fi
             break
         fi
@@ -59,33 +64,22 @@ while true; do
             for f in /proc/sys/*/sched_lib_mask_force; do
                 [ -f "$f" ] && echo 192 > "$f"
             done
-            echo "UnityFix: Use 2 cores for Unity libs (Touch Screen)"
+            echo "[>] UnityFix: Use 2 cores for Unity libs (Touch Screen)"
         else
-            echo "UnityFix: No change it was already applied"
+            echo "[>] UnityFix: No change it was already applied"
         fi
         break
     fi
 done
 
-# ========================
 # Continuar con el resto del script
-# ========================
-
 echo ""
 echo "============================="
 echo "+ By：@LeanHijosdesusMadres"
 echo "============================="
-
 echo "libunity.so, libfb.so" > /proc/sys/kernel/sched_lib_name
 echo "libunity.so, libfb.so" > /proc/sys/walt/sched_lib_name
-
 sleep 3
 
 # Enviar notificación (sin imprimir nada)
 su -lp 2000 -c "cmd notification post -S bigtext -t 'Sex?:' -i file:///storage/emulated/0/Android/media/.lean.png -I file:///storage/emulated/0/Android/media/.modulostk.png lean '@LeanHijosdesusMadres'" >/dev/null 2>&1
-
-# Copiar imagen si no existe (sin imprimir nada)
-#[ ! -f "$A0/lean.jpg" ] && cp "$BASEDIR/lean.jpg" "$A0/" >/dev/null 2>&1
-
-# Abrir imagen en la galería (sin imprimir nada)
-#[ -f "$A0/lean.jpg" ] && su -c "am start -a android.intent.action.VIEW -d file://$A0/lean.jpg -t image/jpeg" >/dev/null 2>&1

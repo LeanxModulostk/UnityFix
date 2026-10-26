@@ -10,13 +10,13 @@ Setup the library name and mask to always report the same max
 cpu freq to the tasks.
 
 ▸ This improves performance in android games:
-• Call of Duty Mobile
-• Genshin Impact
-• League of Legends: Wild Rift
-• Mobile Legends
-• CarX Street
-• Free Fire
-• and others...
+- Call of Duty Mobile
+- Genshin Impact
+- League of Legends: Wild Rift
+- Mobile Legends
+- CarX Street
+- Free Fire
+- and others...
 
 ## Installation 
 1. Flash the module in Magisk

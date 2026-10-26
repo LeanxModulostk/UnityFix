@@ -1,6 +1,8 @@
 # UnityFix
 
-![](https://i.ibb.co/bvcBtGQ/1670234941155.png)
+![
+
+](https://i.ibb.co/bvcBtGQ/1670234941155.png)
 
 ## Description
 Always report max cpu freq to unity tasks

@@ -3,225 +3,539 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Graphics - SurfaceFlinger</title>
+  <title>UnityFix</title>
   <style>
+    :root {
+      color-scheme: dark;
+      --bg: #121212;
+      --card: #1e1e1e;
+      --btn: #2c2c2c;
+      --btn-active: #3a3a3a;
+      --accent: #2f4b73;
+      --accent-line: #4a7fc1;
+      --text: #e6e6e6;
+      --muted: #9a9a9a;
+      --line: #333;
+    }
     * {
-      color: rgba(255, 255, 255, .75);
-      font-size: 1rem;
+      box-sizing: border-box;
       -webkit-tap-highlight-color: transparent;
     }
-    strong {
-      font-size: .9rem;
-    }
     body {
-      background: #000;
-      padding: 8px;
-    }
-    body::before {
-      background: url("fondo.jpg") center/cover no-repeat;
-      content: "";
-      filter: blur(16px);
-      height: 100%;
-      position: fixed;
-      left: 0;
-      opacity: .99;
-      top: 0;
-      width: 100%;
-      z-index: -1;
-    }
-    h1 {
-      background: rgba(0, 0, 0, .25);
-      border-radius: 35px;
-      font-family: monospace;
-      font-weight: 750;
-      margin-top: 20px;
-      padding: 6px;
-      text-align: center;
-    }
-    pre {
-      background: rgba(0, 0, 0, .1);
-      border: 1px solid rgba(0, 0, 0, .25);
-      border-radius: 15px;
-      flex: 1;
+      background: var(--bg);
+      color: var(--text);
+      font: 15px/1.4 system-ui, sans-serif;
       margin: 0;
       padding: 12px;
+    }
+    .top {
+      align-items: center;
+      display: flex;
+      justify-content: space-between;
+      margin: 2px 2px 10px;
+    }
+    h1 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: .04em;
+      margin: 0;
+    }
+    .lang {
+      border-radius: 50%;
+      flex: none;
+      font-size: 1.3rem;
+      height: 40px;
+      line-height: 1;
+      padding: 0;
+      width: 40px;
+    }
+    .banner {
+      border-radius: 14px;
+      display: block;
+      margin-bottom: 10px;
+      max-width: 100%;
+      width: 100%;
+    }
+    .card {
+      background: var(--card);
+      border-radius: 14px;
+      margin-bottom: 10px;
+      padding: 10px;
+    }
+    .label {
+      color: var(--muted);
+      font-size: .8rem;
+      margin: 0 2px 8px;
+    }
+    pre {
+      color: var(--muted);
+      font-size: .78rem;
+      margin: 0;
+      max-height: 40vh;
+      min-height: 48px;
+      overflow: auto;
       white-space: pre-wrap;
       word-wrap: break-word;
-      min-height: 20px;
     }
     button {
-      background: rgba(0, 0, 0, .25);
+      background: var(--btn);
       border: 0;
-      border-radius: 15px;
-      flex: 1;
-      font-weight: 750;
-      padding: 12px;
-      transition: transform .25s, background .25s;
+      border-radius: 10px;
+      color: var(--text);
+      font: inherit;
+      font-weight: 600;
+      padding: 12px 6px;
     }
-    button:active {
-      background: rgba(0, 0, 0, .5);
-      transform: scale(.95);
+    button:active { background: var(--btn-active); }
+    button.active {
+      background: var(--accent);
+      box-shadow: inset 0 0 0 2px var(--accent-line);
     }
-    .section {
-      background: rgba(0, 0, 0, .25);
-      border-radius: 20px;
-      padding: 16px;
-      margin-top: 16px;
-    }
-    .output-container {
+    .full { width: 100%; }
+    .grid {
+      display: grid;
+      gap: 8px;
+      grid-template-columns: 1fr 1fr;
       margin-bottom: 8px;
-      margin-top: 1px;
     }
-    .image-container {
-      margin-bottom: 2px;
-      margin-top: 16px;
-      opacity: .99;
+    .row { display: flex; gap: 8px; margin-top: 8px; }
+    .row > button { flex: 1; }
+    details summary {
+      cursor: pointer;
+      font-weight: 600;
+      list-style: none;
+      padding: 4px 2px;
+      text-align: center;
     }
-    .image-container img {
-      border-radius: 20px;
-      max-width: 100%;
-    }
-    .toggle-info {
-      border-radius: 20px;
-      width: 100%;
-      margin-bottom: 12px;
-    }
-    .info-panel {
+    details summary::-webkit-details-marker { display: none; }
+    details[open] summary { margin-bottom: 8px; }
+    .count { color: var(--muted); font-size: .85rem; }
+    .chips {
       background: rgba(0, 0, 0, .25);
-      border-radius: 20px;
-      margin-top: 12px;
-      max-height: 42px;
-      overflow: hidden;
-      transition: border-radius .5s, max-height .5s, padding .5s;
+      border-radius: 10px;
+      margin: 8px 0;
+      max-height: 35vh;
+      min-height: 36px;
+      overflow: auto;
+      padding: 4px;
     }
-    .info-panel.show {
-      max-height: 500px;
-      transition: border-radius .5s, max-height .5s, padding .5s;
+    .chip {
+      align-items: center;
+      background: var(--btn);
+      border-radius: 14px;
+      display: inline-flex;
+      font-size: .8rem;
+      gap: 4px;
+      margin: 3px;
+      padding: 2px 3px 2px 10px;
     }
-    .info-item {
-      margin-bottom: 6px;
-      padding-bottom: 4px;
-      padding-left: 16px;
-      padding-right: 16px;
-      border-bottom: 1px solid rgba(255, 255, 255, .1);
+    .chip button {
+      border-radius: 50%;
+      flex: none;
+      font-size: .8rem;
+      height: 22px;
+      line-height: 1;
+      padding: 0;
+      width: 22px;
     }
-    .info-item:last-child {
-      border-bottom: 0;
+    input[type="text"] {
+      background: rgba(0, 0, 0, .3);
+      border: 0;
+      border-radius: 10px;
+      color: var(--text);
+      flex: 1;
+      font: inherit;
+      min-width: 0;
+      outline: 0;
+      padding: 12px;
     }
-    .info-title {
-      font-weight: 750;
+    .info-item { border-top: 1px solid var(--line); padding: 8px 2px; }
+    .info-item:first-of-type { border-top: 0; }
+    .info-title { font-weight: 600; }
+    .info-desc, .info-option { color: var(--muted); font-size: .85rem; }
+    body { padding-bottom: 76px; }
+    .fab {
+      background: var(--btn) url("lean.png") center/cover no-repeat;
+      border-radius: 50%;
+      bottom: 16px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .5);
+      height: 48px;
+      position: fixed;
+      right: 16px;
+      width: 48px;
     }
-    .info-desc {
-      font-size: .95rem;
-      line-height: 1.5;
-      opacity: .8;
-    }
-    .info-option {
-      color: rgba(255, 255, 255, .5);
-      font-size: .85rem;
-      line-height: 1.4;
-    }
+    .fab:active { opacity: .7; }
   </style>
 </head>
 <body>
-  <h1>[ U N I T Y F I X ]</h1>
-  <div class="image-container">
-    <img src="unityfix.png">
+  <div class="top">
+    <h1>UnityFix</h1>
+    <button id="langBtn" class="lang" aria-label="Idioma / Language">🇵🇪</button>
   </div>
-  <!-- Contenedor para el log -->
-  <div class="section">
-    <div class="output-container">
-      <pre id="log-output">     @LeanHijosdesusMadres</pre>
+  <img class="banner" src="unityfix.png" alt="UnityFix">
+
+  <div class="card"><pre id="log-output">@LeanHijosdesusMadres</pre></div>
+
+  <div class="card">
+    <div class="label" data-i18n="coresLabel">CPU cores for Unity libs</div>
+    <div class="grid">
+      <button data-mask="255" data-i18n="mask255">All cores [0-7]</button>
+      <button data-mask="240" data-i18n="mask240">4 cores [4-7]</button>
+      <button data-mask="192" data-i18n="mask192">2 cores [6-7]</button>
+      <button data-mask="128" data-i18n="mask128">CPU 7 only [7]</button>
     </div>
-  </div>
-  <div id="infoPanel" class="info-panel hidden">
-    <button id="toggleInfo" class="toggle-info" style="background:rgba(120,120,125,.38)">Show Info</button>
-    <div class="info-item">
-      <div class="info-title">+ By @LeanHijosdesusMadres</div>
-    </div>
-    <div class="info-item" style="margin-bottom:0;">
-      <div class="info-title">UnityFix</div>
-      <div class="info-desc"> 255 = Use all cores [0-7]</div>
-      <div class="info-desc"> 240 = Use 4 cores [4-7]</div>
-      <div class="info-desc"> 192 = Use 2 cores [6-7]</div>
-    </div>
-    <div class="info-item" style="margin-bottom:0;">
-      <div class="info-title">Kill All Apps</div>
-      <div class="info-desc"> Force closes all apps</div>
-    </div>
-  </div>
-  <div class="section">
-    <button style="background:rgba(67,102,177,.70);width:100%" data-cmd="su -c 'cat /proc/sys/*/sched_lib_mask_force'">Check UnityFix</button>
-      <div class="section">
-    <button style="background:rgba(255,0,0,.5);width:100%" data-cmd="for a in $(cmd package list packages --user 0 | grep -v android | cut -f2 -d:; cmd package list packages --user 0 google | grep android | cut -f2 -d:); do cmd activity force-stop $a & done">Kill All Apps</button>
+    <button id="checkBtn" class="full" data-i18n="check">Check UnityFix</button>
   </div>
 
+  <details class="card">
+    <summary data-i18n="libraries">Libraries</summary>
+    <div class="count" id="libCount" data-i18n="loading">Loading...</div>
+    <div id="chips" class="chips"></div>
+    <div class="row">
+      <input type="text" id="newLib" placeholder="libname.so" data-i18n-ph="libPlaceholder" autocapitalize="off" autocomplete="off" spellcheck="false">
+      <button id="addLib" style="flex:none;" data-i18n="add">Add</button>
+    </div>
+    <div class="row">
+      <button id="saveLib" data-i18n="apply">Apply</button>
+      <button id="resetLib" data-i18n="restore">Restore default</button>
+    </div>
+  </details>
+
+  <details class="card">
+    <summary data-i18n="showInfo">Show Info</summary>
+    <div class="info-item">
+      <div class="info-title" data-i18n="infoWhatTitle">What it does</div>
+      <div class="info-desc" data-i18n="infoWhatDesc">Unity apps incorrectly set the CPU affinity to the max capacity cores. UnityFix sets two kernel parameters so those apps use the cores you choose.</div>
+      <div class="info-option" data-i18n-html="infoWhatName"><b>sched_lib_name:</b> comma separated list of libraries (.so). If an app has one of them loaded, the kernel treats it as a library based app (Unity games load libunity.so).</div>
+      <div class="info-option" data-i18n-html="infoWhatMask"><b>sched_lib_mask_force:</b> CPU mask (bit N = CPU N, 0-255) that the kernel uses as the CPU affinity of those apps instead of the one they ask for.</div>
+    </div>
+    <div class="info-item">
+      <div class="info-title" data-i18n="infoCoresTitle">CPU cores</div>
+      <div class="info-desc" data-i18n="infoCoresDesc">Applies the mask right away and re-applies it at every boot.</div>
+      <div class="info-option" data-i18n="infoOpt255">255 = Use all cores [0-7]</div>
+      <div class="info-option" data-i18n="infoOpt240">240 = Use 4 cores [4-7]</div>
+      <div class="info-option" data-i18n="infoOpt192">192 = Use 2 cores [6-7]</div>
+      <div class="info-option" data-i18n="infoOpt128">128 = Use only CPU 7</div>
+    </div>
+    <div class="info-item">
+      <div class="info-title" data-i18n="libraries">Libraries</div>
+      <div class="info-desc" data-i18n="infoLibsDesc">Libraries written to sched_lib_name (comma separated). Apply writes the list right away and keeps it at every boot.</div>
+      <div class="info-option" data-i18n-html="infoRestoreOpt"><b>Restore default:</b> libunity.so, libfb.so</div>
+    </div>
+    <div class="info-item">
+      <div class="info-title" data-i18n="check">Check UnityFix</div>
+      <div class="info-desc" data-i18n="infoCheckDesc">Shows the mask and the library list the kernel is using now.</div>
+    </div>
+    <div class="info-item">
+      <div class="info-title" data-i18n="logTitle">Log</div>
+      <div class="info-desc" data-i18n="infoLog">After each boot the module watches the values for 5 minutes and fixes them if your ROM changes them. Every change is saved with date and time in /storage/emulated/0/unityfix_log.txt (a new log is created on every boot).</div>
+      <div class="info-option" data-i18n="infoLogFallback">If the internal storage is not available, it is saved in /data/adb/unityfix/unityfix_log.txt.</div>
+    </div>
+    <div class="info-item">
+      <div class="info-title">LibChecker</div>
+      <div class="info-desc" data-i18n="infoLibChecker">The LibChecker app is recommended to see the libraries of your app (game).</div>
+    </div>
+  </details>
+
+  <a class="fab" id="tgBtn" href="https://t.me/modulostk" aria-label="Telegram"></a>
+
 <script type="module">
-  import { exec, fullScreen } from "https://cdn.jsdelivr.net/npm/kernelsu@1.0.6/+esm";
-  fullScreen(true);
-  
-  // OBTENER REFERENCIA AL ELEMENTO DE LOG
-  const logOutput = document.getElementById('log-output');
-  
-  // FUNCIÓN PARA ACTUALIZAR EL LOG
-  function updateLog(message, isError = false) {
-  logOutput.textContent = message;
-  logOutput.style.color = isError
-    ? 'rgba(255, 100, 100, 0.9)'
-    : 'rgba(255, 255, 255, 0.75)';
-  console.log(message);
-}
-  
-  // FUNCIÓN PARA EJECUTAR COMANDOS Y MOSTRAR RESULTADO
-  async function executeCommand(command, buttonText) {
-    updateLog(`Ejecutando: ${command}`);
-    
-    try {
-      const result = await exec(command);
-      
-      if (result.stdout && result.stdout.trim()) {
-        updateLog(`  ✓ ${buttonText}: ${result.stdout.trim()}`);
-      } else if (result.stderr && result.stderr.trim()) {
-        updateLog(`⚠ ${buttonText}: ${result.stderr.trim()}`, true);
-      } else {
-        updateLog(`. ✓ ${buttonText}: Comando ejecutado exitosamente`);
+  // exec local: llama directamente a la API `ksu` que inyecta el WebUI (sin internet)
+  function exec(command, options = {}) {
+    return new Promise((resolve, reject) => {
+      const cb = `exec_cb_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+      const done = () => { delete window[cb]; };
+      window[cb] = (errno, stdout, stderr) => { done(); resolve({ errno, stdout, stderr }); };
+      try {
+        if (!window.ksu || typeof window.ksu.exec !== 'function') {
+          throw new Error('WebUI API (ksu) not available');
+        }
+        window.ksu.exec(command, JSON.stringify(options), cb);
+      } catch (e) {
+        done();
+        reject(e);
       }
-      
-      return result;
-    } catch (error) {
-      console.error('Error ejecutando comando:', error);
-      updateLog(`✗ ${buttonText}: Error - ${error.message}`, true);
-      return { stdout: '', stderr: error.message };
+    });
+  }
+
+  const CFG = '/data/adb/unityfix';
+  const DEFAULT_LIBS = ['libunity.so', 'libfb.so'];
+  const MASK_KEYS = { 255: 'mask255', 240: 'mask240', 192: 'mask192', 128: 'mask128' };
+  const NAME_RE = /^[A-Za-z0-9._+-]+$/;
+
+  // ---------- Idioma (inglés por defecto) ----------
+  const I18N = {
+    en: {
+      coresLabel: 'CPU cores for Unity libs',
+      mask255: 'All cores [0-7]', mask240: '4 cores [4-7]', mask192: '2 cores [6-7]', mask128: 'CPU 7 only [7]',
+      check: 'Check UnityFix', libraries: 'Libraries', loading: 'Loading...',
+      libPlaceholder: 'libname.so', add: 'Add', apply: 'Apply', applyDirty: 'Apply *', restore: 'Restore default',
+      showInfo: 'Show Info',
+      infoWhatTitle: 'What it does',
+      infoWhatDesc: 'Unity apps incorrectly set the CPU affinity to the max capacity cores. UnityFix sets two kernel parameters so those apps use the cores you choose.',
+      infoWhatName: '<b>sched_lib_name:</b> comma separated list of libraries (.so). If an app has one of them loaded, the kernel treats it as a library based app (Unity games load libunity.so).',
+      infoWhatMask: '<b>sched_lib_mask_force:</b> CPU mask (bit N = CPU N, 0-255) that the kernel uses as the CPU affinity of those apps instead of the one they ask for.',
+      infoCoresTitle: 'CPU cores',
+      infoCoresDesc: 'Applies the mask right away and re-applies it at every boot.',
+      infoOpt255: '255 = Use all cores [0-7]', infoOpt240: '240 = Use 4 cores [4-7]',
+      infoOpt192: '192 = Use 2 cores [6-7]', infoOpt128: '128 = Use only CPU 7',
+      infoLibsDesc: 'Libraries written to sched_lib_name (comma separated). Apply writes the list right away and keeps it at every boot.',
+      infoRestoreOpt: '<b>Restore default:</b> libunity.so, libfb.so',
+      infoCheckDesc: 'Shows the mask and the library list the kernel is using now.',
+      logTitle: 'Log',
+      infoLog: 'After each boot the module watches the values for 5 minutes and fixes them if your ROM changes them. Every change is saved with date and time in /storage/emulated/0/unityfix_log.txt (a new log is created on every boot).',
+      infoLogFallback: 'If the internal storage is not available, it is saved in /data/adb/unityfix/unityfix_log.txt.',
+      infoLibChecker: 'The LibChecker app is recommended to see the libraries of your app (game).',
+      applying: l => `Applying: ${l}...`,
+      noMaskFile: '⚠ sched_lib_mask_force not found on this kernel',
+      alreadyApplied: l => `✓ ${l}: already applied (saved for next boot)`,
+      applied: (l, v) => `✓ ${l}: applied (mask ${v})`,
+      kernelReports: (l, x) => `✗ ${l}: the kernel reports ${x}`,
+      noSched: '⚠ sched_lib_* not found on this kernel',
+      checkOut: (m, name, l) => `Mask: ${m}${name}\nLibs: ${l}`,
+      nothing: 'nothing', empty: '(empty)',
+      saving: 'Saving libraries...',
+      doneApplied: n => `✓ List applied: ${n} libraries`,
+      doneRestored: n => `✓ Restored list: ${n} libraries`,
+      warnKernel: x => `⚠ Saved for next boot, but the kernel reports: ${x}\n(the list may be too long for the kernel)`,
+      invalid: n => `⚠ Invalid name: ${n} (only letters, numbers, . _ + -)`,
+      dup: '⚠ Already in the list',
+      remove: n => `Remove ${n}`,
+      libCount: (n, d) => `${n} libraries${d ? ' · unapplied changes' : ''}`,
+      langLabel: 'Switch to Spanish'
+    },
+    es: {
+      coresLabel: 'Núcleos de CPU para las libs de Unity',
+      mask255: 'Todos los núcleos [0-7]', mask240: '4 núcleos [4-7]', mask192: '2 núcleos [6-7]', mask128: 'Solo CPU 7 [7]',
+      check: 'Revisar UnityFix', libraries: 'Librerías', loading: 'Cargando...',
+      libPlaceholder: 'libnombre.so', add: 'Agregar', apply: 'Aplicar', applyDirty: 'Aplicar *', restore: 'Restaurar lista',
+      showInfo: 'Ver info',
+      infoWhatTitle: 'Qué hace',
+      infoWhatDesc: 'Las apps de Unity configuran mal la afinidad de CPU hacia los núcleos de mayor capacidad. UnityFix configura dos parámetros del kernel para que esas apps usen los núcleos que elijas.',
+      infoWhatName: '<b>sched_lib_name:</b> lista de librerías (.so) separadas por comas. Si una app tiene cargada alguna, el kernel la trata como una app basada en librería (los juegos de Unity cargan libunity.so).',
+      infoWhatMask: '<b>sched_lib_mask_force:</b> máscara de CPU (bit N = CPU N, 0-255) que el kernel usa como afinidad de CPU de esas apps en lugar de la que piden.',
+      infoCoresTitle: 'Núcleos de CPU',
+      infoCoresDesc: 'Aplica la máscara al instante y la vuelve a aplicar en cada arranque.',
+      infoOpt255: '255 = Usar todos los núcleos [0-7]', infoOpt240: '240 = Usar 4 núcleos [4-7]',
+      infoOpt192: '192 = Usar 2 núcleos [6-7]', infoOpt128: '128 = Usar solo la CPU 7',
+      infoLibsDesc: 'Librerías que se escriben en sched_lib_name (separadas por comas). Aplicar escribe la lista al instante y la conserva en cada arranque.',
+      infoRestoreOpt: '<b>Restaurar lista:</b> libunity.so, libfb.so',
+      infoCheckDesc: 'Muestra la máscara y la lista de librerías que usa el kernel ahora.',
+      logTitle: 'Registro (log)',
+      infoLog: 'Después de cada arranque el módulo vigila los valores durante 5 minutos y los corrige si tu ROM los cambia. Cada cambio se guarda con fecha y hora en /storage/emulated/0/unityfix_log.txt (se crea un log nuevo en cada arranque).',
+      infoLogFallback: 'Si el almacenamiento interno no está disponible, se guarda en /data/adb/unityfix/unityfix_log.txt.',
+      infoLibChecker: 'Se recomienda la app LibChecker para ver las librerías de tu aplicación (juego).',
+      applying: l => `Aplicando: ${l}...`,
+      noMaskFile: '⚠ No se encontró sched_lib_mask_force en este kernel',
+      alreadyApplied: l => `✓ ${l}: ya estaba aplicado (guardado para el próximo arranque)`,
+      applied: (l, v) => `✓ ${l}: aplicado (máscara ${v})`,
+      kernelReports: (l, x) => `✗ ${l}: el kernel reporta ${x}`,
+      noSched: '⚠ No se encontró sched_lib_* en este kernel',
+      checkOut: (m, name, l) => `Máscara: ${m}${name}\nLibs: ${l}`,
+      nothing: 'nada', empty: '(vacío)',
+      saving: 'Guardando librerías...',
+      doneApplied: n => `✓ Lista aplicada: ${n} librerías`,
+      doneRestored: n => `✓ Lista restaurada: ${n} librerías`,
+      warnKernel: x => `⚠ Guardado para el próximo arranque, pero el kernel reporta: ${x}\n(la lista puede ser demasiado larga para el kernel)`,
+      invalid: n => `⚠ Nombre inválido: ${n} (solo letras, números, . _ + -)`,
+      dup: '⚠ Ya está en la lista',
+      remove: n => `Quitar ${n}`,
+      libCount: (n, d) => `${n} librerías${d ? ' · cambios sin aplicar' : ''}`,
+      langLabel: 'Cambiar a inglés'
+    }
+  };
+  let lang = 'en';
+  try { if (localStorage.getItem('lang') === 'es') lang = 'es'; } catch (e) {}
+  const t = (k, ...a) => {
+    const v = I18N[lang][k];
+    return typeof v === 'function' ? v(...a) : v;
+  };
+  const maskName = v => (MASK_KEYS[v] ? t(MASK_KEYS[v]) : '');
+  const langBtn = document.getElementById('langBtn');
+  let libsLoaded = false;
+
+  function applyLang() {
+    document.documentElement.lang = lang;
+    document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
+    document.querySelectorAll('[data-i18n-html]').forEach(el => { el.innerHTML = t(el.dataset.i18nHtml); });
+    document.querySelectorAll('[data-i18n-ph]').forEach(el => { el.placeholder = t(el.dataset.i18nPh); });
+    // Bandera = idioma al que se cambiará al presionar
+    langBtn.textContent = lang === 'en' ? '🇵🇪' : '🇺🇸';
+    langBtn.setAttribute('aria-label', t('langLabel'));
+    if (libsLoaded) render();
+  }
+
+  const logOutput = document.getElementById('log-output');
+  function updateLog(message, isError = false) {
+    logOutput.textContent = message;
+    logOutput.style.color = isError ? '#ff7a7a' : '';
+  }
+
+  async function sh(cmd) {
+    try {
+      const r = await exec(cmd);
+      return { out: (r.stdout || '').trim(), err: (r.stderr || '').trim() };
+    } catch (e) {
+      return { out: '', err: e.message };
     }
   }
-  
-  window.addEventListener("load", () => {
-    // CONFIGURAR EVENTOS DE BOTONES
-    document.querySelectorAll("button[data-cmd]").forEach(button => {
-      button.addEventListener("click", async () => {
-        const originalCommand = button.dataset.cmd;
-        const buttonText = button.textContent;
-        
-        // LIMPIAR COMANDO SI TIENE FORMATO $(...)
-        let cleanCommand = originalCommand;
-        if (originalCommand.startsWith('$(') && originalCommand.endsWith(')')) {
-          cleanCommand = originalCommand.slice(2, -1);
-        }
-        
-        await executeCommand(cleanCommand, buttonText);
-      });
-    });
-    
-    // CONFIGURAR PANEL DE INFORMACIÓN (toggle)
-    const infoPanel = document.getElementById("infoPanel");
-    const toggleButton = document.getElementById("toggleInfo");
-    
-    if (toggleButton && infoPanel) {
-      toggleButton.addEventListener("click", () => {
-        const isVisible = infoPanel.classList.toggle("show");
-        toggleButton.textContent = isVisible ? "Hide Info" : "Show Info";
-      });
+
+  // Valor actual (primer archivo que exista en /proc/sys/*/)
+  const getMask = async () =>
+    (await sh('for f in /proc/sys/*/sched_lib_mask_force; do [ -f "$f" ] && { cat "$f"; break; }; done')).out;
+  const getLiveLibs = async () =>
+    (await sh('for f in /proc/sys/*/sched_lib_name; do [ -f "$f" ] && { cat "$f"; break; }; done')).out;
+
+  // ---------- Núcleos ----------
+  const maskBtns = [...document.querySelectorAll('button[data-mask]')];
+  function markMask(v) {
+    maskBtns.forEach(b => b.classList.toggle('active', b.dataset.mask === String(v)));
+  }
+
+  async function applyMask(v) {
+    const label = maskName(v);
+    updateLog(t('applying', label));
+    const before = await getMask();
+    if (before === '') {
+      updateLog(t('noMaskFile'), true);
+      return;
     }
+    await sh(`mkdir -p ${CFG} && echo ${v} > ${CFG}/mask; for f in /proc/sys/*/sched_lib_mask_force; do [ -f "$f" ] && echo ${v} > "$f"; done`);
+    const after = await getMask();
+    markMask(after);
+    if (after === String(v)) {
+      updateLog(before === String(v) ? t('alreadyApplied', label) : t('applied', label, v));
+    } else {
+      updateLog(t('kernelReports', label, after || t('nothing')), true);
+    }
+  }
+
+  async function check() {
+    const m = await getMask();
+    const l = await getLiveLibs();
+    if (m === '' && l === '') {
+      updateLog(t('noSched'), true);
+      return;
+    }
+    markMask(m);
+    const name = maskName(m) ? ` (${maskName(m)})` : '';
+    updateLog(t('checkOut', m || '?', name, l || t('empty')));
+  }
+
+  // ---------- Librerías (sched_lib_name) ----------
+  const chipsEl = document.getElementById('chips');
+  const countEl = document.getElementById('libCount');
+  const saveBtn = document.getElementById('saveLib');
+  const input = document.getElementById('newLib');
+  let libs = [];
+  let dirty = false;
+
+  const parseLibs = str => [...new Set(
+    str.split(',').map(s => s.trim()).filter(n => n && NAME_RE.test(n))
+  )];
+
+  function render() {
+    chipsEl.textContent = '';
+    libs.forEach((name, i) => {
+      const chip = document.createElement('span');
+      chip.className = 'chip';
+      const label = document.createElement('span');
+      label.textContent = name;
+      const del = document.createElement('button');
+      del.textContent = '×';
+      del.setAttribute('aria-label', t('remove', name));
+      del.addEventListener('click', () => {
+        libs.splice(i, 1);
+        dirty = true;
+        render();
+      });
+      chip.append(label, del);
+      chipsEl.appendChild(chip);
+    });
+    countEl.textContent = t('libCount', libs.length, dirty);
+    saveBtn.textContent = dirty ? t('applyDirty') : t('apply');
+  }
+
+  async function loadLibs() {
+    const saved = await sh(`if [ -f ${CFG}/libs ]; then cat ${CFG}/libs; else echo __NOFILE__; fi`);
+    let str = saved.out;
+    if (str === '__NOFILE__') {
+      str = await getLiveLibs();
+      if (!str) str = DEFAULT_LIBS.join(', ');
+    }
+    libs = parseLibs(str);
+    dirty = false;
+    libsLoaded = true;
+    render();
+  }
+
+  async function saveLibs(doneKey) {
+    const str = libs.join(', ');
+    updateLog(t('saving'));
+    await sh(`mkdir -p ${CFG} && echo '${str}' > ${CFG}/libs; for f in /proc/sys/*/sched_lib_name; do [ -f "$f" ] && echo '${str}' > "$f"; done`);
+    const live = await getLiveLibs();
+    dirty = false;
+    render();
+    if (live === str) {
+      updateLog(t(doneKey, libs.length));
+    } else {
+      updateLog(t('warnKernel', live || t('nothing')), true);
+    }
+  }
+
+  function addLibs() {
+    const names = input.value.split(/[\s,]+/).filter(Boolean);
+    if (!names.length) return;
+    let added = 0;
+    for (const n of names) {
+      if (!NAME_RE.test(n)) {
+        updateLog(t('invalid', n), true);
+        return;
+      }
+      if (!libs.includes(n)) {
+        libs.push(n);
+        added++;
+      }
+    }
+    input.value = '';
+    if (added) {
+      dirty = true;
+      render();
+    } else {
+      updateLog(t('dup'), true);
+    }
+  }
+
+  window.addEventListener('load', () => {
+    langBtn.addEventListener('click', () => {
+      lang = lang === 'en' ? 'es' : 'en';
+      try { localStorage.setItem('lang', lang); } catch (e) {}
+      applyLang();
+    });
+    applyLang();
+
+    // Botón flotante -> canal de Telegram
+    document.getElementById('tgBtn').addEventListener('click', e => {
+      e.preventDefault();
+      sh('am start -a android.intent.action.VIEW -d https://t.me/modulostk >/dev/null 2>&1');
+    });
+
+    maskBtns.forEach(b => b.addEventListener('click', () => applyMask(Number(b.dataset.mask))));
+    document.getElementById('checkBtn').addEventListener('click', check);
+
+    document.getElementById('addLib').addEventListener('click', addLibs);
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') addLibs(); });
+    saveBtn.addEventListener('click', () => saveLibs('doneApplied'));
+    document.getElementById('resetLib').addEventListener('click', () => {
+      libs = [...DEFAULT_LIBS];
+      saveLibs('doneRestored');
+    });
+
+    getMask().then(m => {
+      if (m === '') updateLog(t('noMaskFile'), true);
+      else markMask(m);
+    });
+    loadLibs();
   });
 </script>
 </body>

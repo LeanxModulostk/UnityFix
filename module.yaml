@@ -1,0 +1,20 @@
+# KernelSU Modules catalog metadata (modules.kernelsu.org).
+# Display only: version, versionCode and the download come from module.prop inside the release ZIP.
+schemaVersion: 1
+id: unityfix
+name: UnityFix
+summary: Improves the performance of Call of Duty Mobile, Genshin Impact and other Unity engine games (You can add the library for a game or app via the web UI.)
+description: README.md
+license: MIT
+homepage: https://github.com/LeanxModulostk/UnityFix
+support: https://t.me/modulostk
+tags: [Improves, game, unity, codm, webui]
+icon: lean.jpg
+authors:
+  - name: Lean
+    url: https://github.com/LeanxModulostk
+compatibility:
+  androidMinApi: 21
+  architectures: [arm64-v8a, armeabi-v7a, x86_64]
+release:
+  assetPattern: "UnityFix_v*.zip"

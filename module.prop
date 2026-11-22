@@ -1,9 +1,9 @@
 id=unityfix
 name=UnityFix
-version=9
-versionCode=9
+version=10
+versionCode=10
 author=@LeanHijosdesusMadres
-description=Improves the performance of Call of Duty Mobile, Genshin Impact and other Unity engine games
+description=Improves the performance of Call of Duty Mobile, Genshin Impact and other Unity engine games (You can add the library for a game or app via the web UI.)
 support=https://t.me/modulostk
 banner=/webroot/leanbanner.jpg
 actionIcon=lean.jpg

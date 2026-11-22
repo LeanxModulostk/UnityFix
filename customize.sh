@@ -1,4 +1,30 @@
 #!/system/bin/sh
+
+# =========================================
+# Requirement: the kernel must expose sched_lib_mask_force
+# =========================================
+SCHED_OK=0
+for f in /proc/sys/*/sched_lib_mask_force; do
+    [ -f "$f" ] && { SCHED_OK=1; break; }
+done
+if [ "$SCHED_OK" != "1" ]; then
+    ui_print ""
+    ui_print "[!] /proc/sys/*/sched_lib_mask_force not found"
+    ui_print "[!] This kernel is not supported by UnityFix"
+    abort "[!] Installation cancelled"
+fi
+
+# Keep the cores chosen with the previous version (it was stored in service.sh)
+CFG=/data/adb/unityfix
+OLD=/data/adb/modules/unityfix/service.sh
+mkdir -p "$CFG"
+if [ ! -f "$CFG/mask" ] && [ -f "$OLD" ]; then
+    v=$(sed -n 's/^echo "\([0-9]*\)" > \/proc\/sys\/kernel\/sched_lib_mask_force.*/\1/p' "$OLD" | head -n1)
+    case "$v" in
+        255|240|192|128) echo "$v" > "$CFG/mask" ;;
+    esac
+fi
+
 uptime=$(cut -d. -f1 /proc/uptime) memory=$(cat /proc/meminfo|tr -s \ )
 
 # FUNCIÓN SIMPLIFICADA - SIEMPRE IMPRIME
